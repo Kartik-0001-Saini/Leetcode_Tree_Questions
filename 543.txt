@@ -1,0 +1,52 @@
+Question 543.) --> Diameter of the Binary Tree.
+Given the root of a binary tree, return the length of the diameter of the tree.
+
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+The length of a path between two nodes is represented by the number of edges between them.
+
+solution.)-->
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+
+    int height(TreeNode* root){
+        if(root == NULL){
+            return 0;
+        }
+
+        int lftHgt = height(root->left);
+        int rgtHgt = height(root->right);
+
+        return max(lftHgt, rgtHgt) + 1;
+    }
+
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(root == NULL){
+            return 0;
+        }
+
+        int lftDia = diameterOfBinaryTree(root->left);
+        int rgtDia = diameterOfBinaryTree(root->right);
+
+        int currDia = height(root->left) + height(root->right);
+
+        return max(currDia, max(lftDia, rgtDia));
+    }
+};
+
+In this I am first calculates the diameter of binary Tree of both side left as  well as right side.
+By the help of height function i will calculate the height of the binary tree.
+Then at last i will return the maximum distance between the node which i find in it this is the diameter of the binary tree.
+Time Complexity :- O(n^2)
+Space Complexity :- O(1)
