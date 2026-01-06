@@ -1,0 +1,95 @@
+Question 199.)--> Binary Tree Right Side View
+
+Given the root of a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+solution.) -->
+Intuition
+Hume Right Side View nikalna hai, matlab har level ka rightmost node jo tree ko right side se dekhne par visible hota hai vo return karna hai.
+
+Idea ye hai ki :
+
+- Tree ko level by level (BFS) traverse kareige
+
+- Har level ke nodes ko process kareige
+
+- Right side view ke liye, har level ka pehla node tab dikhega agar hum pehle right child ko traverse karein
+Isliye hum:
+
+- Queue use karte hain BFS ke liye
+
+- Har node ke saath uska level (depth) store karte hain
+Approach
+1.) Agar root == NULL hai to empty vector return kar do.
+
+2.) Ek queue lo jo {node, level} store kare.
+
+3.) Ek map lo jisme:
+
+i.) key = level
+
+ii.) value = us level ka rightmost node hai
+4.) BFS start karo:
+
+i.) Queue se node nikalo
+
+ii.) Agar us level ka value map me pehli baar aa raha hai, to store karo (kyunki hum pehle right child push kar rahe hain)
+5.) Queue me pehle right child, phir left child push karo.
+
+6.) BFS complete hone ke baad, map ke values ko vector me daal do (sorted order me).
+
+At last Vector return kar do.
+
+Complexity
+Time complexity: O(n log n)
+n - total number of nodes.
+Space complexity: O(n)
+Queue aur map dono worst case me n nodes store kar sakte hain
+Code
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        if(root == NULL){
+            return {};
+        }
+
+        queue<pair<TreeNode*, int>> q;
+        map<int, int> mp;
+        vector<int> res;
+
+        q.push({root, 0});
+        while(!q.empty()){
+            TreeNode* curr = q.front().first;
+            int currVD = q.front().second;
+
+            if(mp.find(currVD) == mp.end()){
+                mp[currVD] = curr->val;
+            }
+
+            q.pop();
+            if(curr->right){
+                q.push({curr->right, currVD+1});
+            }
+            
+            if(curr->left){
+                q.push({curr->left, currVD+1});
+            }
+        }
+
+        for(auto i:mp){
+            res.push_back(i.second);
+        }
+
+        return res;
+    }
+};
