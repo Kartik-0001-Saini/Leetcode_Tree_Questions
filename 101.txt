@@ -1,0 +1,40 @@
+Question 101.)--> Symmetric Tree
+Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+
+solution .)-->
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSame(TreeNode* leftTree, TreeNode* rightTree) {
+        if (leftTree == NULL || rightTree == NULL) {
+            return leftTree == rightTree;
+        }
+
+        return leftTree->val == rightTree->val &&
+               isSame(leftTree->left, rightTree->right) &&
+               isSame(leftTree->right, rightTree->left);
+    }
+
+    bool isSymmetric(TreeNode* root) {
+        if (root == NULL) {
+            return true;
+        }
+
+        return isSame(root->left, root->right);
+    }
+};
+
+In this question I have to simply check that the coming new node by recursion is same mirror image or not.
+Time Complexity :- O(n)
+Space Complexity :- O(1)
