@@ -56,3 +56,28 @@ public:
         return count;
     }
 };
+
+
+
+Method 2:-
+Without vector, string and power
+class Solution {
+public:
+
+    int dfs(TreeNode* root, int currSum){
+        if(root == NULL){
+            return 0;
+        }
+
+        currSum = 2*currSum + root->val;
+        if(root->left == NULL && root->right == NULL){
+            return currSum;
+        }
+
+        return dfs(root->left, currSum) + dfs(root->right, currSum);
+    }
+
+    int sumRootToLeaf(TreeNode* root) {
+        return dfs(root, 0);
+    }
+};
